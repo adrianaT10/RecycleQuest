@@ -1,0 +1,19 @@
+<navbar type="landing"></navbar>
+
+<form class="form-container">
+	<mat-form-field floatLabel="true">
+		<input matInput placeholder="Email address" type="email"
+		#email (keyup)="updateMail(email.value)" required>
+<!-- 		<mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+      Please enter a valid email address
+    </mat-error> -->
+	</mat-form-field>
+
+	<mat-form-field floatLabel="true">
+		<input matInput placeholder="Password" type="password" 
+		#pass (keyup)="updatePassword(pass.value)" required>
+	</mat-form-field>
+
+	<button mat-raised-button (click)="tryLogin()" type="submit">Login</button>
+</form>
+

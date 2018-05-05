@@ -1,0 +1,15 @@
+<navbar type="landing"></navbar>
+
+<div class="form-container">
+	<mat-form-field floatLabel="true">
+		<input matInput placeholder="Email address" 
+		#email (keyup)="updateMail(email.value)" required>
+	</mat-form-field>
+
+	<mat-form-field floatLabel="true">
+		<input matInput placeholder="Password" type="password" 
+		#pass (keyup)="updatePassword(pass.value)" required>{{password}}
+	</mat-form-field>
+
+	<button mat-raised-button (click)="trySignup()">Login</button>
+</div>

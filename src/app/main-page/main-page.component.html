@@ -1,0 +1,110 @@
+
+<div class="page">
+  <navbar type="main"></navbar>
+  <mat-horizontal-stepper>
+
+    <mat-step>
+      <ng-template matStepLabel>Alege resursa</ng-template>
+      <div>
+        <button mat-button matStepperNext (click)="selectResource('hartie')">
+          <img class="icon" src="assets/paper.png"/>
+          <div>Hartie</div>
+        </button>
+        <button mat-button matStepperNext (click)="selectResource('plastic')">
+          <img class="icon" src="assets/plastic.png"/>
+          <div>Plastic</div>
+        </button>
+        <button mat-button matStepperNext (click)="selectResource('metal')">
+          <img class="icon" src="assets/metal.png"/>
+          <div>Metale</div>
+        </button>
+        <button mat-button matStepperNext (click)="selectResource('ulei')">
+          <img class="icon" src="assets/oil.png"/>
+          <div>Ulei</div>
+        </button>
+        <button mat-button matStepperNext (click)="selectResource('sticla')">
+          <img class="icon" src="assets/glass.png"/>
+          <div>Sticla</div>
+        </button>
+        <button mat-button matStepperNext (click)="selectResource('electronice')">
+          <img class="icon" src="assets/electronics.png"/>
+          <div>Electronice</div>
+        </button>
+        <button mat-button matStepperNext (click)="selectResource('lemn')">
+          <img class="icon" src="assets/wood.png"/>
+          <div>Lemn</div>
+        </button>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Alege centrul de reciclare</ng-template>
+      <div class="map-container">
+        <div class="map">
+          <agm-map [latitude]="lat" [longitude]="lng">
+            <agm-marker *ngFor="let center of centers" [latitude]="center.lat" [longitude]="center.long"
+              [opacity]="center == selectedCenter ? 1: 0.7"></agm-marker>
+          </agm-map>
+        </div>
+
+        <div class="map-cards">
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let center of centers">
+              <mat-expansion-panel-header>
+                <mat-panel-title (mouseover)="selectCenter(center)">
+                  {{center.name}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              
+                {{center.address}} <br> 
+                {{center.website}} <br>
+                {{center.phoneNumber}} <br><br>
+                <button mat-button matStepperNext>
+                  Alege
+                </button>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Data reciclarii</ng-template>
+      <div class="lastStep">
+        <div *ngIf="!selectedCenter">
+          Nu ai ales niciun centru
+        </div>
+
+        <div *ngIf="selectedCenter">
+          <div class="mat-subheading-2">
+            Ai ales {{selectedCenter?.name}} 
+          </div>
+
+          <div class="mat-subheading-1">
+            <mat-icon>call</mat-icon>
+            {{selectedCenter?.phoneNumber}} <br>
+
+            <mat-icon>computer</mat-icon>
+            {{selectedCenter?.website}} <br>
+
+            <mat-icon>home</mat-icon>
+            {{selectedCenter?.address}}
+          </div>
+
+          <br>
+          <div class="mat-subheading-2">
+            Reciclarea se va efectua in data de:
+          </div>
+
+          <input matInput [matDatepicker]="picker" placeholder="Alege data">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+
+          <br><br>
+
+          <button mat-button (click)="finishProcess()">Terminat</button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

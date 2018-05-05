@@ -1,0 +1,81 @@
+<mat-sidenav-container class="sidenav-container">
+
+    <navbar type="main"></navbar>
+
+    <mat-sidenav #sidenav class="sidenav">
+        <mat-nav-list>
+            <mat-list-item (click)="showProfile()">Profil</mat-list-item>
+            <mat-list-item (click)="showHistory()">Istoric Tranzactii</mat-list-item>
+            <mat-list-item>Setari</mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+
+
+    <button type="button" mat-icon-button (click)="sidenav.open()">
+        <!-- <i class="material-icons">settings</i> -->
+        <mat-icon>settings</mat-icon>
+    </button>
+
+
+    <div *ngIf="isProfileVisible()">
+        <div class="profile-container">
+    	
+            <div class="left-profile">
+                <img class="img-circle" src="assets/bart-simpson.jpg"/>   
+            </div>
+
+            <div class="right-profile">
+                <h1>Hello, {{username}}</h1>
+
+                <h2>Ai salvat planeta azi?</h2>
+                <h3>Nivel: {{levelLabel}}</h3>
+                <mat-progress-bar mode="determinate" value="{{getLevelProgress()}}"></mat-progress-bar>
+            </div>
+        
+        </div>
+    </div>
+
+    <div *ngIf="isHistoryVisible()">
+    	
+
+    	<div class="table-container" mat-elevation-z8>
+            <h2> Istoric Tranzactii </h2>
+    		<div class="table-header">
+		    	<mat-form-field>
+		     		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtreaza">
+		    	</mat-form-field>
+		  	</div>
+
+    		<mat-table [dataSource]="transactionsHistory" matSort>
+    			<mat-header-row  #table *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    			<mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row>
+
+    			<ng-container matColumnDef="date">
+			      <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+			      <mat-cell *matCellDef="let element"> {{element.date}} </mat-cell>
+			    </ng-container>
+
+			    <ng-container matColumnDef="resource">
+			      <mat-header-cell *matHeaderCellDef mat-sort-header> Resursa </mat-header-cell>
+			      <mat-cell *matCellDef="let element"> {{element.resource}} </mat-cell>
+			    </ng-container>
+
+			    <ng-container matColumnDef="weight">
+			      <mat-header-cell *matHeaderCellDef mat-sort-header> Weight </mat-header-cell>
+			      <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+			    </ng-container>
+
+			    <ng-container matColumnDef="recyclingCenter">
+			      <mat-header-cell *matHeaderCellDef mat-sort-header> Centru </mat-header-cell>
+			      <mat-cell *matCellDef="let element"> {{element.recyclingCenter}} </mat-cell>
+			    </ng-container>
+
+    		</mat-table>
+    	</div>
+    </div>
+
+    
+
+</mat-sidenav-container>
+
+

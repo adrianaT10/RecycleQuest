@@ -1,0 +1,149 @@
+<mat-tab-group>
+	<!--- TAB 1 -->
+  <mat-tab label="Make Queries">
+    <form (ngSubmit)="submitCenterQuery()" #centerForm="ngForm">
+      <mat-form-field>
+        <input matInput placeholder="Numele centrului" [(ngModel)]="centerName" name="name"
+               #name="ngModel">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Material" [(ngModel)]="chosenMaterial" name="power"
+                #material="ngModel">
+          <mat-option *ngFor="let mat of materials" [value]="mat">{{mat}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-button type="submit">Cauta</button>
+    </form>
+
+
+    <form (ngSubmit)="submitUserQuery()" #userForm="ngForm">
+      <mat-form-field>
+        <input matInput placeholder="Username" [(ngModel)]="searchUserName" name="username"
+               #username="ngModel">
+      </mat-form-field>
+
+
+      <button mat-button type="submit">Cauta</button>
+    </form>
+
+  </mat-tab>
+
+
+  <!--- TAB 2 -->
+  <mat-tab label="Add Data">
+    <form (ngSubmit)="addNewCenter()" #addCenterForm="ngForm" class="inputsContainer">
+      <mat-form-field>
+         <input matInput placeholder="Nume Centru" [(ngModel)]="newCenter.name" name="name"
+               #name="ngModel">
+      </mat-form-field>
+
+      <mat-form-field>
+         <input matInput placeholder="Adresa" [(ngModel)]="newCenter.address" name="name"
+               #name="ngModel">
+      </mat-form-field>
+
+      <mat-form-field>
+         <input matInput placeholder="Numar Telefon" [(ngModel)]="newCenter.phoneNumber" name="name"
+               #name="ngModel">
+      </mat-form-field>
+
+      <mat-form-field>
+         <input matInput placeholder="Website" [(ngModel)]="newCenter.website" name="name"
+               #name="ngModel">
+      </mat-form-field>
+
+      <mat-form-field>
+         <input matInput placeholder="Lat" [(ngModel)]="newCenter.lat" name="name"
+               #name="ngModel">
+      </mat-form-field>
+
+      <mat-form-field>
+         <input matInput placeholder="Long" [(ngModel)]="newCenter.long" name="name"
+               #name="ngModel">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let mat of newCenterMaterials" [selectable]="true"
+                   [removable]="true" (removed)="removeNewCenterMaterial(mat)">
+            {{mat}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Materiale"
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="addNewCenterMaterial($event)" />
+        </mat-chip-list>
+      </mat-form-field>
+
+      <button mat-button type="submit">Adauga</button>
+
+    </form>
+
+  </mat-tab>
+
+
+  <!--- TAB 3 -->
+  <mat-tab label="Search Centers">
+  	<button mat-button (click)="runCentersService()">Run Service</button>
+
+  	<div #gmap style=”width:100%;height:400px”></div>
+
+  	<div>
+  	<mat-card *ngFor="let center of centersToAdd" role="group" class="centerCards">
+  		<mat-card-title>
+  			{{center.name}}
+  		</mat-card-title>
+
+  		<mat-card-subtitle>
+  			{{center.formatted_address}}
+  		</mat-card-subtitle>
+
+  		<mat-card-content class="cardContainer">
+  			<mat-form-field>
+  				<input #phone (keyup)="center.formatted_phone_number = phone.value" value="{{center.formatted_phone_number}}" matInput placeholder="Phone Number">
+  			</mat-form-field> 
+  			<mat-form-field>
+  				<input #website (keyup)="center.website = website.value" value="{{center.website}}" matInput placeholder="Website">
+  			</mat-form-field>
+  			{{center.rating}}
+  			{{center.geometry.location.lat()}}
+  			{{center.geometry.location.lng()}}
+
+  			<mat-form-field>
+  			  <mat-select placeholder="Collection Type" [(value)]="center.collectionType">
+  			    <mat-option *ngFor="let ctype of collectionType" [value]="ctype">
+  			      {{ ctype }}
+  			    </mat-option>
+  			  </mat-select>
+  			</mat-form-field>
+
+
+        <mat-form-field>
+          <mat-chip-list #matChipList>
+            <mat-chip *ngFor="let mat of center.categories" [selectable]="true"
+                     [removable]="true" (removed)="removeNewCenterMaterial2(mat, center)">
+              {{mat}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Materiale"
+                   [matChipInputFor]="matChipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   [matChipInputAddOnBlur]="addOnBlur"
+                   (matChipInputTokenEnd)="addNewCenterMaterial2($event, center)" />
+          </mat-chip-list>
+        </mat-form-field>
+  			
+  		</mat-card-content>
+
+  		<button mat-button (click)="addCenter(center, center.collectionType)">Add</button>
+  	</mat-card>
+  	</div>
+  </mat-tab>
+</mat-tab-group>
+
+
+

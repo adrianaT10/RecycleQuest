@@ -1,0 +1,18 @@
+<div class="logo">
+	<h2>RecycleQuest</h2>
+</div>
+<!-- <mat-toolbar [ngSwitch]="type" class="nav-container z-depth-3" > -->
+<div [ngSwitch]="type" class="nav-container">
+	<div *ngSwitchCase="'landing'" class="buttons-container">
+		<a class="mat-button nav-button" mat-button routerLink="/login">Login</a>
+		<a class="mat-button nav-button" mat-button routerLink="/signup">SignUp</a>
+	</div>
+
+	<div *ngSwitchCase="'main'">
+		<a class="mat-button nav-button" routerLink="/app" mat-button>Recicleaza</a>
+		<a class="mat-button nav-button" routerLink='/app/info' mat-button>Informatii</a>
+		<a class="mat-button nav-button" routerLink="/app/profile" mat-button tabindex="0" aria-disabled="false">Profil</a>
+	</div>
+</div>
+<mat-divider></mat-divider>
+<!-- </mat-toolbar> -->
