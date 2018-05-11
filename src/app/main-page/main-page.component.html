@@ -5,32 +5,32 @@
 
     <mat-step>
       <ng-template matStepLabel>Alege resursa</ng-template>
-      <div>
-        <button mat-button matStepperNext (click)="selectResource('hartie')">
+      <div class="buttons-container">
+        <button mat-button matStepperNext (click)="selectResource('hartie')" class="resource-button">
           <img class="icon" src="assets/paper.png"/>
           <div>Hartie</div>
         </button>
-        <button mat-button matStepperNext (click)="selectResource('plastic')">
+        <button mat-button matStepperNext (click)="selectResource('plastic')" class="resource-button">
           <img class="icon" src="assets/plastic.png"/>
           <div>Plastic</div>
         </button>
-        <button mat-button matStepperNext (click)="selectResource('metal')">
+        <button mat-button matStepperNext (click)="selectResource('metal')" class="resource-button">
           <img class="icon" src="assets/metal.png"/>
           <div>Metale</div>
         </button>
-        <button mat-button matStepperNext (click)="selectResource('ulei')">
+        <button mat-button matStepperNext (click)="selectResource('ulei')" class="resource-button">
           <img class="icon" src="assets/oil.png"/>
           <div>Ulei</div>
         </button>
-        <button mat-button matStepperNext (click)="selectResource('sticla')">
+        <button mat-button matStepperNext (click)="selectResource('sticla')" class="resource-button">
           <img class="icon" src="assets/glass.png"/>
           <div>Sticla</div>
         </button>
-        <button mat-button matStepperNext (click)="selectResource('electronice')">
+        <button mat-button matStepperNext (click)="selectResource('electronice')" class="resource-button">
           <img class="icon" src="assets/electronics.png"/>
           <div>Electronice</div>
         </button>
-        <button mat-button matStepperNext (click)="selectResource('lemn')">
+        <button mat-button matStepperNext (click)="selectResource('lemn')" class="resource-button">
           <img class="icon" src="assets/wood.png"/>
           <div>Lemn</div>
         </button>
@@ -41,7 +41,7 @@
       <ng-template matStepLabel>Alege centrul de reciclare</ng-template>
       <div class="map-container">
         <div class="map">
-          <agm-map [latitude]="lat" [longitude]="lng">
+          <agm-map [latitude]="lat" [longitude]="lng" [zoom]="12">
             <agm-marker *ngFor="let center of centers" [latitude]="center.lat" [longitude]="center.long"
               [opacity]="center == selectedCenter ? 1: 0.7"></agm-marker>
           </agm-map>
@@ -71,16 +71,16 @@
     <mat-step>
       <ng-template matStepLabel>Data reciclarii</ng-template>
       <div class="lastStep">
-        <div *ngIf="!selectedCenter">
+        <div *ngIf="!selectedCenter" class="my-row">
           Nu ai ales niciun centru
         </div>
 
         <div *ngIf="selectedCenter">
-          <div class="mat-subheading-2">
+          <div class="mat-subheading-2 my-row">
             Ai ales {{selectedCenter?.name}} 
           </div>
 
-          <div class="mat-subheading-1">
+          <div class="mat-subheading-1 my-row">
             <mat-icon>call</mat-icon>
             {{selectedCenter?.phoneNumber}} <br>
 
@@ -91,18 +91,29 @@
             {{selectedCenter?.address}}
           </div>
 
-          <br>
-          <div class="mat-subheading-2">
-            Reciclarea se va efectua in data de:
+      
+          <div class="mat-subheading-2 my-row" 
+            matTooltip="Dupa ce ai sunat centrul, alege data cand se va efectua reciclarea" matTooltipShowDelay="1500" >
+            Reciclarea se va efectua in data de: <br>
+
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" placeholder="Alege data" >
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
           </div>
 
-          <input matInput [matDatepicker]="picker" placeholder="Alege data">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <div class="my-row" matTooltip="Cantitatea de material in kg/L/m3" matTooltipShowDelay="1500">
+            <mat-form-field>
+              <input matInput placeholder="Cantitatea reciclata" [(ngModel)]="quantity">
+            </mat-form-field>
+          </div>
 
           <br><br>
 
-          <button mat-button (click)="finishProcess()">Terminat</button>
+          <div class="my-row" matTooltip="Acest pas va inregistra tranzactia in istoricul tau." matTooltipShowDelay="1500">
+            <button mat-button (click)="finishProcess()">Terminat</button>
+          </div>
         </div>
       </div>
     </mat-step>

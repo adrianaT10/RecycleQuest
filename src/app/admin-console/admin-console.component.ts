@@ -166,6 +166,8 @@ export class AdminConsoleComponent implements OnInit {
 		// });
 		console.log(center);
 		console.log(collectionType);
+		var index = this.centersToAdd.indexOf(center);
+		this.centersToAdd.splice(index, 1);
 	}
 
 }

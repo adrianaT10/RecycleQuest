@@ -17,6 +17,7 @@ export class ProfilePageComponent implements OnInit {
   transactionsHistory;
   columnsToDisplay = ['date', 'resource', 'weight', 'recyclingCenter'];
   userInfo: User;
+  iotContainers;
 
   levelUtil = new Levels();
   levelLabel;
@@ -31,22 +32,17 @@ export class ProfilePageComponent implements OnInit {
 
   ngOnInit() {
     this.userUtilsService.getProfileInfo().subscribe((data) => {
-      this.userInfo = data;
+      this.userInfo = {username: data['username'], name: data['name'], achievementPoints: data['achievementPoints']};
       this.username = this.userInfo.username;
-      [this.levelLabel, this.levelMax] = this.levelUtil.getLevel(data.achievementPoints);
-    })
+      [this.levelLabel, this.levelMax] = this.levelUtil.getLevel(data['achievementPoints']);
+      this.iotContainers = data["sensorBins"];
+      this.transactionsHistory = new MatTableDataSource(data['history']);
+      this.transactionsHistory.sort = this.sort;
+    });
   }
 
   showHistory() {
     this.lastPageClicked = profilePage.HISTORY;
-    this.getTransactionHistory();
-  }
-
-  getTransactionHistory() {
-    this.userUtilsService.getUserTransactions().subscribe((data) => {
-      this.transactionsHistory = new MatTableDataSource(data);
-      this.transactionsHistory.sort = this.sort;
-    });
   }
 
   applyFilter(filterValue: string) {
@@ -63,8 +59,16 @@ export class ProfilePageComponent implements OnInit {
     return this.lastPageClicked === profilePage.PROFILE;
   }
 
+  isIotVisible(): boolean {
+    return this.lastPageClicked === profilePage.IOT_CONTAINERS;
+  }
+
   showProfile() {
     this.lastPageClicked = profilePage.PROFILE;
+  }
+
+  showIot() {
+    this.lastPageClicked = profilePage.IOT_CONTAINERS;
   }
 
   getLevelProgress() {
@@ -74,5 +78,5 @@ export class ProfilePageComponent implements OnInit {
 }
 
 enum profilePage {
-  'PROFILE', 'HISTORY', 'SETTINGS'
+  'PROFILE', 'HISTORY', 'IOT_CONTAINERS', 'SETTINGS'
 }

@@ -18,6 +18,7 @@ export class MainPageComponent implements OnInit {
 
   centers = null;
   selectedCenter: RecyclingCenter;
+  quantity;
 
   constructor(private recyclingCentersService: RecyclingCentersService,
     private userUtilsService: UserUtilsService) {}
@@ -34,7 +35,7 @@ export class MainPageComponent implements OnInit {
 
   getCentersLocations(): void {
     this.recyclingCentersService.getLocationsByResource(this.selectedResource).subscribe(
-      centers => this.centers= centers);
+      centers => this.centers = centers);
   
   }
 
@@ -44,6 +45,8 @@ export class MainPageComponent implements OnInit {
 
   finishProcess() {
     //sanity checks!!
-    this.userUtilsService.addRecyclingTransaction(this.selectedResource, this.selectedCenter.name, new Date());
+    this.userUtilsService.addRecyclingTransaction(this.selectedResource, this.selectedCenter.name, new Date(), this.quantity);
+    // this.selectedCenter = undefined;
+    this.quantity = undefined;
   }
 }

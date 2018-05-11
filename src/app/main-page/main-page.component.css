@@ -46,5 +46,31 @@ mat-step {
 
 .last-step {
 	margin: auto;
-	max-width: 100px;
+	/*max-width: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;*/
+	text-align: center;
+}
+
+.buttons-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 20px;
+}
+
+.resource-button {
+	margin: 3px 5px 3px 0;
+}
+
+.my-row {
+	/*width: 200px;*/
+	margin: auto;
+	margin-bottom: 5px;
+	text-align: center;
+	/*align-self: center;*/
 }

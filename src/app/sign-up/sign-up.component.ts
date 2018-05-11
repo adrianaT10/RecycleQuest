@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
-	email: string;
+	name: string;
+  username: string;
 	password: string;
 
   constructor(
@@ -20,7 +21,7 @@ export class SignUpComponent implements OnInit {
   }
 
   trySignup() : void {
-    this.authenticationService.registerNewUser(this.email, this.password)
+    this.authenticationService.registerNewUser(this.username, this.password, this.name)
       .subscribe(res => {
         if (res) {
           this.router.navigate(['app']);
@@ -28,11 +29,4 @@ export class SignUpComponent implements OnInit {
       });
   }
 
-  updateMail(mail: string): void {
-  	this.email = mail
-  }
-
-  updatePassword(pass: string): void {
-  	this.password = pass
-  }
 }

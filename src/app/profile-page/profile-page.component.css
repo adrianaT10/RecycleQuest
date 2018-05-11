@@ -2,6 +2,7 @@
 	background-color: transparent;
     width: 100%;
     height: 100%;
+    color: #656a71;
     /*border: 1px solid rgba(0, 0, 0, 0.5);*/
 }
 
@@ -60,6 +61,31 @@ mat-nav-list {
 
 mat-progress-bar {
   width: 200px;
+}
+
+.icon {
+  max-height: 50px;
+}
+
+.iotContainers {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.iotContainer {
+  width: 250px;
+  margin: 5px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.containers-container {
+  margin: 50px 0 0 100px;
 }
 
 /*.example-sidenav-content {

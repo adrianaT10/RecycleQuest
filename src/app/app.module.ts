@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http'
 import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
 
@@ -22,6 +23,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {AgmCoreModule} from '@agm/core';
 
@@ -71,6 +73,7 @@ import { UserUtilsService } from './user/user-utils.service';
     BrowserModule,
     ButtonModule,
     FormsModule,
+    HttpClientModule,
     HttpModule,
     MatButtonModule,
     MatCardModule,
@@ -89,6 +92,7 @@ import { UserUtilsService } from './user/user-utils.service';
     MatTabsModule,
     MatTableModule,
     MatToolbarModule,
+    MatTooltipModule,
     MDBBootstrapModule.forRoot()
   ],
   providers: [

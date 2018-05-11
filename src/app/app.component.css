@@ -1,8 +1,9 @@
 .main-container {
-	background: url(./background.png) no-repeat center center fixed; 
+	background: url(../assets/copaci.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   height:100vh;
+  color: #656a71;
 }

@@ -1,46 +1,56 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
+import { ServerBase } from '../server-base';
 import { UserService } from './user.service';
 import { Transaction } from './transaction';
 import { User } from './user';
 
 @Injectable()
-export class UserUtilsService {
+export class UserUtilsService extends ServerBase {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private http: HttpClient) { 
+    super();
+  }
 
-  addRecyclingTransaction(resource: string, center: string, date:Date) {
+  mockTransactions = [
+                { 'weight': "10", 'recyclingCenter': 'Sigurec', 'date': new Date('05-05-2018'), 'resource': 'hartie'},
+                { 'weight': "50", 'recyclingCenter': 'Ro Metale', 'date': new Date('05-05-2018'), 'resource': 'metal'}];
+
+  addRecyclingTransaction(resource: string, center: string, date:Date, quantity: string) {
   	if (this.userService.isAnonymousUser()) {
   		return;
   	}
   	//send to server
-  	var name = this.userService.getUsername();
-  	console.log("Register transaction from " + name + " with " + resource + ", " + center);
+  	var username = this.userService.getUsername();
+  	console.log("Register transaction from " + username + " with " + resource + ", " + center);
+
+    const options = {
+      params: new HttpParams().set('username', username).set('resource', resource)
+                        .set('center', center).set('date', date.toDateString()).set('weight', quantity)
+    };
+
+    return this.http.get(`${this.baseUrl}/transaction`, options);
   }
 
-  getUserTransactions(): Observable<Transaction[]> {
-  	if (this.userService.isAnonymousUser()) {
-  		return of([]);
-  	}
 
-    let mock: Transaction[] = [{'id': 1, 'details': '', 'weight': 33, 'recyclingCenter': 'c1', 'date': new Date(), 'resource': 'hartie'},
-                {'id': 1, 'details': '', 'weight': 2, 'recyclingCenter': 'c2', 'date': new Date(), 'resource': 'lemn'},
-                {'id': 1, 'details': '', 'weight': 50, 'recyclingCenter': 'c1', 'date': new Date(), 'resource': 'sticla'}]
-
-    return of(mock);
-  }
-
-  getProfileInfo(): Observable<User> {
+  // return user + transactions
+  getProfileInfo(): Observable<Object> {
     if (this.userService.isAnonymousUser()) {
-      let anonymousMock: User = {'username': "Stranger", 'name': 'Anonymous', 'achievementPoints': 53};
+      let anonymousMock = {'username': "Stranger", 'name': 'Anonymous', 'achievementPoints': 53, 'sensorBins': [{'material': 'Hartie', 'fullness': 30}, {'material': 'Sticla', 'fullness': 80}]};
       return of(anonymousMock);
     }
 
-    let userMock: User = {'username': "Adry", 'name': 'Adriana Tufa', 'achievementPoints': 53};
 
-    return of(userMock)
+    let username = this.userService.getUsername();
+
+    const options = {
+      params: new HttpParams().set('username', username)
+    };
+
+    return this.http.get(`${this.baseUrl}/profile`, options);
   }
 
 }
