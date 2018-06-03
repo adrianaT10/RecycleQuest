@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { } from '@types/googlemaps';
 import {MatChipInputEvent} from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
 import {ENTER, COMMA} from '@angular/cdk/keycodes';
 
 import { AdminService } from './admin.service';
-import { RecyclingCenter, Material, CollectionType } from '../recycling-center/recycling-center';
+import { RecyclingCenter, Material } from '../recycling-center/recycling-center';
 
 @Component({
   selector: 'app-admin-console',
@@ -22,13 +23,18 @@ export class AdminConsoleComponent implements OnInit {
   center = new google.maps.LatLng(44.4299281,26.024193)
 
   centersToAdd = [];
-  collectionType = ["HOME", "ATCENTER", "BOTH", "PARTNER"];
 
   //for Tab 1
   centerName: string;
   chosenMaterial: string;
-  materials = ["Hartie", "Lemn", "Sticla", "Ulei", "Electronice", "Metal", "Plastic"];
+  materials = ["hartie", "lemn", "sticla", "ulei", "electronice", "metal", "plastic"];
   searchUserName: string;
+
+  displayedCenters;
+  columnsToDisplayCenters = ['name', 'phone', , 'website', 'address', 'materials'];
+  displayedUsers;
+  columnsToDisplayUsers = ['name', 'username']
+
 
   //for Tab 2
   newCenter: RecyclingCenter = new RecyclingCenter(undefined, undefined, undefined, undefined, undefined, undefined);
@@ -53,14 +59,23 @@ export class AdminConsoleComponent implements OnInit {
 
 	submitCenterQuery() {
 		console.log(this.centerName + " " + this.chosenMaterial);
-		//make http request
+
+		this.adminService.queryCenters().subscribe((data) => {
+				console.log(data);
+			    this.displayedCenters = new MatTableDataSource(data);
+  		});
+
 		this.centerName = "";
 		this.chosenMaterial = undefined;
 	}
 
 	submitUserQuery() {
 		console.log(this.searchUserName);
-		//http req
+
+		this.adminService.queryUsers().subscribe((data) => {
+				console.log(data);
+			    this.displayedUsers = new MatTableDataSource(data);
+  		});
 		this.searchUserName = "";
 	}
 	
@@ -70,6 +85,10 @@ export class AdminConsoleComponent implements OnInit {
 	addNewCenter() {
 		console.log(this.newCenter);
 		console.log(this.newCenterMaterials);
+
+		this.newCenter.materials = this.newCenterMaterials.join(' ');
+		this.adminService.addCenter(this.newCenter).subscribe((data) => console.log(data));
+
 		this.newCenter = new RecyclingCenter(undefined, undefined, undefined, undefined, undefined, undefined);
 		this.newCenterMaterials = this.materials.slice();
 		//make http req
@@ -127,7 +146,7 @@ export class AdminConsoleComponent implements OnInit {
 		centerIds.forEach(centerId => {
 			this.mapsService.getDetails({placeId: centerId}, (placeInfo, status) => {
 				if (status == google.maps.places.PlacesServiceStatus.OK) {
-					placeInfo.categories = this.materials.slice();
+					placeInfo.materials = this.materials.slice();
 					this.centersToAdd.push(placeInfo);
 					console.log(placeInfo);
 				}
@@ -141,7 +160,7 @@ export class AdminConsoleComponent implements OnInit {
 
 	    // Add our fruit
 	    if ((value || '').trim()) {
-	    	center.categories.push(value.trim());
+	    	center.materials.push(value.trim());
 	    }
 
 	    // Reset the input value
@@ -151,23 +170,31 @@ export class AdminConsoleComponent implements OnInit {
 	  }
 
 	removeNewCenterMaterial2(fruit: any, center): void {
-		let index = center.categories.indexOf(fruit);
+		let index = center.materials.indexOf(fruit);
 
 		if (index >= 0) {
-		  center.categories.splice(index, 1);
+		  center.materials.splice(index, 1);
 		}
 	}
 
-	addCenter(center, collectionType) {
-		// this.adminService.addCenter(center).subscribe(res => {
-		// 	if (res == true) {
+	addCenter(center) {
+		let newCenter = {
+			'name': center.name,
+			'phone': center.formatted_phone_number,
+			'website': center.website,
+			'rating': center.rating,
+			'lat': center.geometry.location.lat(),
+			'lon': center.geometry.location.lng(),
+			'materials': center.materials.join(' '),
+			'address': center.formatted_address
 
-		// 	}
-		// });
-		console.log(center);
-		console.log(collectionType);
+		}
+		this.adminService.addCenter(newCenter).subscribe(res => {
+			console.log(newCenter);
+		});
 		var index = this.centersToAdd.indexOf(center);
 		this.centersToAdd.splice(index, 1);
+		
 	}
 
 }

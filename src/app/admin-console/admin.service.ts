@@ -4,6 +4,8 @@ import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ServerBase } from '../server-base';
 
+
+
 @Injectable()
 export class AdminService extends ServerBase {
 
@@ -17,15 +19,23 @@ export class AdminService extends ServerBase {
       params: new HttpParams().set('centers', centers)
     };
 
-    return this.http.get(`${this.baseUrl}/check-centers`, options);
+    return this.http.post(`${this.baseUrl}/centers/notHere`, centers);
   }
 
-  addCenter(center, type) {
+  addCenter(center) {
   	const options = {
       params: new HttpParams().set('center', center)
     };
 
-    return this.http.post(`${this.baseUrl}/add-center`, options);
+    return this.http.post(`${this.baseUrl}/centers/update`, center, options);
+  }
+
+  queryCenters(): Observable<Object[]> {
+    return this.http.get<Object[]>(`${this.baseUrl}/centers/showAll`);
+  }
+
+  queryUsers(): Observable<Object[]> {
+    return this.http.get<Object[]>(`${this.baseUrl}/users/showAll`);
   }
 
 }

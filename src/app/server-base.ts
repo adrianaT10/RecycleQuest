@@ -1,8 +1,14 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs/observable/of';
 
 export class ServerBase {
-	baseUrl:string = 'http://120a9063.ngrok.io';
+	baseUrl:string = 'http://6859f661.ngrok.io';
+
+	headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
+
+	serverBase() {
+
+	}
 
 	handleError(error: HttpErrorResponse) {
 	  if (error.error instanceof ErrorEvent) {

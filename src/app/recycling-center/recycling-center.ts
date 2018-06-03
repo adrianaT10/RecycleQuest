@@ -3,17 +3,16 @@ export class RecyclingCenter {
 	long: number;
 	name: string;
 	address: string;
-	phoneNumber: string;
+	phone: string;
 	website: string;
 
-	categories = [];
-	collectionType: CollectionType;
+	materials: string;
 
 
 	constructor(name, address, phoneNumber, website, lat, long) {
 		this.name = name;
 		this.address = address;
-		this.phoneNumber = phoneNumber;
+		this.phone = phoneNumber;
 		this.website = website;
 		this.lat = lat;
 		this.long = long;
@@ -30,10 +29,4 @@ export enum Material {
 	Electronics="Electronice"
 }
 
-export enum CollectionType {
-	Home="HOME",
-   	AtCenter="ATCENTER",
-   	Both="BOTH",
-   	Partner="PARTNER"
-}
 

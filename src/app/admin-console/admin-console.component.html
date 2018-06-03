@@ -17,6 +17,41 @@
       <button mat-button type="submit">Cauta</button>
     </form>
 
+    <div class="table-container" mat-elevation-z8>
+        <h2> Centre </h2>
+
+        <mat-table [dataSource]="displayedCenters">
+          <mat-header-row  #table *matHeaderRowDef="columnsToDisplayCenters"></mat-header-row>
+          <mat-row *matRowDef="let myRowData; columns: columnsToDisplayCenters"></mat-row>
+
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Nume </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef> Telefon </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="website">
+            <mat-header-cell *matHeaderCellDef> Website </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.website}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="address">
+            <mat-header-cell *matHeaderCellDef> Adresa </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="materials">
+            <mat-header-cell *matHeaderCellDef> Materiale </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.materials}} </mat-cell>
+          </ng-container>
+
+        </mat-table>
+      </div>
+
 
     <form (ngSubmit)="submitUserQuery()" #userForm="ngForm" class="form-tab-1">
       <mat-form-field>
@@ -27,6 +62,25 @@
 
       <button mat-button type="submit">Cauta</button>
     </form>
+
+    <div class="table-container" mat-elevation-z8>
+        <h2> Utilizatori </h2>
+
+        <mat-table [dataSource]="displayedUsers">
+          <mat-header-row  #table2 *matHeaderRowDef="columnsToDisplayUsers"></mat-header-row>
+          <mat-row *matRowDef="let myRowData; columns: columnsToDisplayUsers"></mat-row>
+
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="username">
+            <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+          </ng-container>
+        </mat-table>
+    </div>
 
   </mat-tab>
 
@@ -45,7 +99,7 @@
       </mat-form-field>
 
       <mat-form-field>
-         <input matInput placeholder="Numar Telefon" [(ngModel)]="newCenter.phoneNumber" name="name"
+         <input matInput placeholder="Numar Telefon" [(ngModel)]="newCenter.phone" name="name"
                #name="ngModel">
       </mat-form-field>
 
@@ -60,7 +114,7 @@
       </mat-form-field>
 
       <mat-form-field>
-         <input matInput placeholder="Long" [(ngModel)]="newCenter.long" name="name"
+         <input matInput placeholder="Long" [(ngModel)]="newCenter.lon" name="name"
                #name="ngModel">
       </mat-form-field>
 
@@ -110,22 +164,13 @@
   				<input #website (keyup)="center.website = website.value" value="{{center.website}}" matInput placeholder="Website">
   			</mat-form-field>
 
-        <div>Rating: {{center.rating}}</div>
   			<div>Latitude: {{center.geometry.location.lat()}}</div>
   			<div>Longitude: {{center.geometry.location.lng()}}</div>
-
-  			<mat-form-field>
-  			  <mat-select placeholder="Collection Type" [(value)]="center.collectionType">
-  			    <mat-option *ngFor="let ctype of collectionType" [value]="ctype">
-  			      {{ ctype }}
-  			    </mat-option>
-  			  </mat-select>
-  			</mat-form-field>
 
 
         <mat-form-field>
           <mat-chip-list #matChipList>
-            <mat-chip *ngFor="let mat of center.categories" [selectable]="true"
+            <mat-chip *ngFor="let mat of center.materials" [selectable]="true"
                      [removable]="true" (removed)="removeNewCenterMaterial2(mat, center)">
               {{mat}}
               <mat-icon matChipRemove>cancel</mat-icon>
@@ -140,7 +185,7 @@
   			
   		</mat-card-content>
 
-  		<button mat-button (click)="addCenter(center, center.collectionType)">Add</button>
+  		<button mat-button (click)="addCenter(center)">Add</button>
   	</mat-card>
   	</div>
   </mat-tab>

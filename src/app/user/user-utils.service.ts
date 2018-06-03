@@ -28,11 +28,11 @@ export class UserUtilsService extends ServerBase {
   	console.log("Register transaction from " + username + " with " + resource + ", " + center);
 
     const options = {
-      params: new HttpParams().set('username', username).set('resource', resource)
+      params: new HttpParams().set('username', username).set('material', resource)
                         .set('center', center).set('date', date.toDateString()).set('weight', quantity)
     };
 
-    return this.http.get(`${this.baseUrl}/transaction`, options);
+    return this.http.post(`${this.baseUrl}/history/newTransaction`, {}, options);
   }
 
 
@@ -50,7 +50,7 @@ export class UserUtilsService extends ServerBase {
       params: new HttpParams().set('username', username)
     };
 
-    return this.http.get(`${this.baseUrl}/profile`, options);
+    return this.http.get(`${this.baseUrl}/users/findByUsername`, options);
   }
 
 }

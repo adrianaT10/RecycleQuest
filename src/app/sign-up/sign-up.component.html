@@ -1,6 +1,6 @@
 <navbar type="landing"></navbar>
 
-<div class="form-container">
+<form class="form-container">
 	<mat-form-field floatLabel="true">
 		<input matInput placeholder="Nume" 
 		#email [(ngModel)]="name" required>
@@ -17,4 +17,4 @@
 	</mat-form-field>
 
 	<button mat-raised-button (click)="trySignup()">Login</button>
-</div>
+</form>

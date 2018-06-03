@@ -18,10 +18,11 @@ export class AuthenticationService extends ServerBase {
   loginUser(username: string, pass: string): Observable<boolean> {
 
     const options = {
-      params: new HttpParams().set('username', username).set('password', pass)
+      params: new HttpParams().set('username', username).set('password', pass),
+      headers: this.headers
     };
 
-    return this.http.get<boolean>(`${this.baseUrl}/login`, options).pipe (res => {
+    return this.http.get<boolean>(`${this.baseUrl}/users/login`, options).pipe (res => {
         if (res) {
           this.userService.setUser({username: username});
         }
@@ -33,9 +34,9 @@ export class AuthenticationService extends ServerBase {
   registerNewUser(username: string, pass: string, name: string): Observable<boolean> {
 
     const options = {
-      params: new HttpParams().set('username', username).set('password', pass).set('name', name)
+      params: new HttpParams().set('name', name).set('username', username).set('password', pass)
     };
-    return this.http.get<boolean>(`${this.baseUrl}/users/signup`, options).pipe (res => {
+    return this.http.post<boolean>(`${this.baseUrl}/users/signup`, {}, options).pipe (res => {
         if (res) {
           this.userService.setUser({username: username});
         }

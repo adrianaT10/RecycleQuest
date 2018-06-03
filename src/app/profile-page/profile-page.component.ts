@@ -32,10 +32,12 @@ export class ProfilePageComponent implements OnInit {
 
   ngOnInit() {
     this.userUtilsService.getProfileInfo().subscribe((data) => {
+      console.log(data);
+      
       this.userInfo = {username: data['username'], name: data['name'], achievementPoints: data['achievementPoints']};
       this.username = this.userInfo.username;
       [this.levelLabel, this.levelMax] = this.levelUtil.getLevel(data['achievementPoints']);
-      this.iotContainers = data["sensorBins"];
+      this.iotContainers = data["sensors"];
       this.transactionsHistory = new MatTableDataSource(data['history']);
       this.transactionsHistory.sort = this.sort;
     });

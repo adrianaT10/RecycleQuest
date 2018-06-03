@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 import { RecyclingCenter } from '../recycling-center/recycling-center';
 import { RecyclingCentersService } from '../recycling-center/recycling-centers.service';
@@ -21,7 +22,7 @@ export class MainPageComponent implements OnInit {
   quantity;
 
   constructor(private recyclingCentersService: RecyclingCentersService,
-    private userUtilsService: UserUtilsService) {}
+    private userUtilsService: UserUtilsService, public snackBar: MatSnackBar) {}
 
   ngOnInit() {
   }
@@ -35,7 +36,10 @@ export class MainPageComponent implements OnInit {
 
   getCentersLocations(): void {
     this.recyclingCentersService.getLocationsByResource(this.selectedResource).subscribe(
-      centers => this.centers = centers);
+      centers => {
+        this.centers = centers;
+        orderByDistance();
+      });
   
   }
 
@@ -45,8 +49,29 @@ export class MainPageComponent implements OnInit {
 
   finishProcess() {
     //sanity checks!!
-    this.userUtilsService.addRecyclingTransaction(this.selectedResource, this.selectedCenter.name, new Date(), this.quantity);
+    this.userUtilsService.addRecyclingTransaction(this.selectedResource, this.selectedCenter.name, new Date(), this.quantity)
+      .subscribe((res) => console.log(res));
     // this.selectedCenter = undefined;
     this.quantity = undefined;
+
+    this.snackBar.open("Datele au fost inregistrate", "Done", {
+      duration: 4000,
+    });
+  }
+
+  orderByDistance() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          let currentLat = position.coords.latitude;
+          let currentLong = position.coords.longitude;
+
+          this.recyclingCentersService.getDistances(currentLat, currentLong, this.centers).subscribe(res => {
+            this.centers = this.recyclingCentersService.orderByDistances(this.centers, res);
+          });
+
+        });
+      } else {
+        console.error("Geolocation not supported by browser");
+      }
   }
 }
