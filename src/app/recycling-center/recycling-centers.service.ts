@@ -25,8 +25,12 @@ export class RecyclingCentersService extends ServerBase {
 
 
   getDistances(currentLat, currentLong, centers) {
-	let reduceCallback = (acc, center)   => { acc + '|' + center.lat + ',' + center.lon};
+	let reduceCallback = (acc, center)   => { return acc + '|' + center.lat + ',' + center.lon};
+
   	let destinations = centers.reduce(reduceCallback, '');
+  	console.log("destinations " + destinations);
+  	console.log(centers);
+
   	destinations = destinations.slice(1);
 
   	const options = {
@@ -38,12 +42,15 @@ export class RecyclingCentersService extends ServerBase {
   }
 
   orderByDistances(centers, response) {
-  	let centerDistances = response["rows"]["elements"];
+  	console.log(response);
+  	let centerDistances = response["rows"][0]["elements"];
 	centers.forEach((center, index) => {
 		center.distance = centerDistances[index]["distance"]["value"];
 	});
 
+	console.log(centers);
 	centers.sort((a, b) => a.distance - b.distance);
+	console.log(centers);
 
 	return centers;
   }

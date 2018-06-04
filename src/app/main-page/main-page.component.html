@@ -58,7 +58,9 @@
               
                 {{center.address}} <br> 
                 {{center.website}} <br>
-                {{center.phone}} <br><br>
+                {{center.phone}} <br>
+                Distanta: {{center.distance / 1000 | number:'1.0-2'}} km
+                <br><br>
                 <button mat-button matStepperNext>
                   Alege
                 </button>
@@ -97,7 +99,7 @@
             Reciclarea se va efectua in data de: <br>
 
             <mat-form-field>
-              <input matInput [matDatepicker]="picker" placeholder="Alege data" >
+              <input matInput [matDatepicker]="picker" placeholder="Alege data">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -105,8 +107,8 @@
 
           <div class="my-row" matTooltip="Cantitatea de material in kg/L" matTooltipShowDelay="1500">
             <mat-form-field>
-              <input matInput placeholder="Cantitatea reciclata" [(ngModel)]="quantity"> kg/L
-            </mat-form-field>
+              <input matInput placeholder="Cantitatea reciclata" [(ngModel)]="quantity">
+            </mat-form-field> kg/L
           </div>
 
           <br><br>

@@ -30,6 +30,8 @@ import {AgmCoreModule} from '@agm/core';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
+// import { NgHttpLoaderModule } from 'ng-http-loader';
+
 import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -95,7 +97,8 @@ import { UserUtilsService } from './user/user-utils.service';
     MatTableModule,
     MatToolbarModule,
     MatTooltipModule,
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    // NgHttpLoaderModule
   ],
   providers: [
     AdminService,

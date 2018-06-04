@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
+import {FormControl} from '@angular/forms';
 
 import { RecyclingCenter } from '../recycling-center/recycling-center';
 import { RecyclingCentersService } from '../recycling-center/recycling-centers.service';
@@ -20,6 +21,7 @@ export class MainPageComponent implements OnInit {
   centers = null;
   selectedCenter: RecyclingCenter;
   quantity;
+  selectedDate = new FormControl();
 
   constructor(private recyclingCentersService: RecyclingCentersService,
     private userUtilsService: UserUtilsService, public snackBar: MatSnackBar) {}
@@ -37,8 +39,8 @@ export class MainPageComponent implements OnInit {
   getCentersLocations(): void {
     this.recyclingCentersService.getLocationsByResource(this.selectedResource).subscribe(
       centers => {
-        this.centers = centers;
-        orderByDistance();
+        // this.centers = centers;
+        this.orderByDistance(centers);
       });
   
   }
@@ -48,25 +50,27 @@ export class MainPageComponent implements OnInit {
   }
 
   finishProcess() {
+    console.log(this.selectedDate);
     //sanity checks!!
     this.userUtilsService.addRecyclingTransaction(this.selectedResource, this.selectedCenter.name, new Date(), this.quantity)
       .subscribe((res) => console.log(res));
-    // this.selectedCenter = undefined;
-    this.quantity = undefined;
 
-    this.snackBar.open("Datele au fost inregistrate", "Done", {
-      duration: 4000,
+      // this.selectedCenter = undefined;
+      this.quantity = undefined;
+
+      this.snackBar.open("Datele au fost inregistrate", "Done", {
+        duration: 5000,
     });
   }
 
-  orderByDistance() {
+  orderByDistance(centers) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           let currentLat = position.coords.latitude;
           let currentLong = position.coords.longitude;
 
-          this.recyclingCentersService.getDistances(currentLat, currentLong, this.centers).subscribe(res => {
-            this.centers = this.recyclingCentersService.orderByDistances(this.centers, res);
+          this.recyclingCentersService.getDistances(currentLat, currentLong, centers).subscribe(res => {
+            this.centers = this.recyclingCentersService.orderByDistances(centers, res);
           });
 
         });

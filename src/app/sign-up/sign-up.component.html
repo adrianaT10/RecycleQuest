@@ -3,17 +3,17 @@
 <form class="form-container">
 	<mat-form-field floatLabel="true">
 		<input matInput placeholder="Nume" 
-		#email [(ngModel)]="name" required>
+		#email [(ngModel)]="name" required name="nume">
 	</mat-form-field>
 
 	<mat-form-field floatLabel="true">
 		<input matInput placeholder="Username" 
-		#email [(ngModel)]="username" required>
+		#email [(ngModel)]="username" required name="username">
 	</mat-form-field>
 
 	<mat-form-field floatLabel="true">
 		<input matInput placeholder="Password" type="password" 
-		#pass [(ngModel)]="password" required>
+		#pass [(ngModel)]="password" required name="pass">
 	</mat-form-field>
 
 	<button mat-raised-button (click)="trySignup()">Login</button>
